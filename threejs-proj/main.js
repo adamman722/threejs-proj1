@@ -6,10 +6,10 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 const scene = new THREE.Scene();
 
 const camera = new THREE.PerspectiveCamera(
-  75,
+  70,
   window.innerWidth / window.innerHeight,
-  0.1,
-  100000
+  1,
+  10000
 );
 
 const renderer = new THREE.WebGL1Renderer({
@@ -19,31 +19,34 @@ const renderer = new THREE.WebGL1Renderer({
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 
-camera.position.setZ(30);
+camera.position.setZ(0);
 
 renderer.render(scene, camera);
 
 //this is where we actually create the said object we want to add
-const geometry = new THREE.TorusGeometry(10, 1, 2, 100);
+const geometry = new THREE.TorusGeometry(1, 5, 10, 1000);
 const geometry2 = new THREE.TorusGeometry(7, 1, 2, 100);
 const geometry3 = new THREE.TorusGeometry(4, 1, 2, 100);
 const material = new THREE.MeshStandardMaterial({
   color: "pink",
 });
+const material2 = new THREE.MeshStandardMaterial({
+  color: "black",
+});
 const meshFloor = new THREE.Mesh(
-  new THREE.PlaneGeometry(10, 5, 10, 50),
-  new THREE.MeshBasicMaterial({ color: 0x00000, wireframe: false })
+  new THREE.PlaneGeometry(0, 0, 100, 5000),
+  new THREE.MeshBasicMaterial({ wireframe: false })
 );
 
-const torus = new THREE.Mesh(geometry, material);
+const torus = new THREE.Mesh(geometry, material2);
 const torus2 = new THREE.Mesh(geometry2, material);
 const torus3 = new THREE.Mesh(geometry3, material);
 // const torus2 = new THREE.Mesh(geometry, material);
 
-scene.add(torus, meshFloor, torus2, torus3);
-torus.rotateZ(40);
-torus2.position.z = 3;
-torus3.position.z = 10;
+scene.add(torus, meshFloor, torus2);
+torus.rotateZ(700);
+torus2.position.z = 0;
+torus3.position.z = 0;
 meshFloor.position.x = 0;
 meshFloor.position.y = 0;
 meshFloor.position.z = 0;
@@ -109,11 +112,13 @@ function moveCamera() {
   // moon.rotation.z += 0.05;
 
   camera.position.z = t * -0.01;
-  // camera.position.x = t * -0.00;
-  // camera.position.y = t * -0.0002;
+  camera.position.x = t * -0.001;
+  camera.position.y = t * -0.0002;
   console.log(camera.position.z);
+  console.log(camera.position.x);
+  console.log(camera.position.y);
   console.log(torus2);
-  console.log(torus3);
+  // console.log(torus3);
 }
 document.body.onscroll = moveCamera;
 //this is kinda like a useEffect it will always update for you, recursive function
@@ -129,7 +134,7 @@ function Animate() {
   // torus2.rotation.x += -0.001;
   // torus2.rotation.y += -0.0005;
   // torus2.rotation.z += -0.001;
-  if (camera.position.z > 20) {
+  if (camera.position.z > 1) {
     torus.rotation.x += 0.01;
     torus.rotation.y += 0.005;
     torus.rotation.z += 0.01;
